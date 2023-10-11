@@ -1,22 +1,32 @@
 pipeline {
-    agent any{
+    agent any
+    
     stages {
-              steps('init')
-                {
+        stage('Init') {
+            steps {
+                script {
+                    echo 'Initializing Terraform...'
                     sh 'terraform init'
                 }
-           }
-    stages {
-            stepe ('terraform plan')
-                {
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                script {
+                    echo 'Running Terraform plan...'
                     sh 'terraform plan'
                 }
-        }  
-    stages{
-            steps('terraform apply')
-                {
-                    sh 'terraform apply'
-                }
+            }
         }
-}
+
+        stage('Terraform Apply') {
+            steps {
+                script {
+                    echo 'Applying Terraform changes...'
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+    }
 }
